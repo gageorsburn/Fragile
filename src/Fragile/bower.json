@@ -3,7 +3,10 @@
   "private": true,
   "dependencies": {
     "startbootstrap-agency": "1.0.6",
-    "jquery": "2.2.0",
-    "bootstrap": "3.3.6"
+    "bootstrap": "3.3.6",
+    "jquery": "2.2.0"
+  },
+  "exportsOverride": {
+
   }
 }
