@@ -8,23 +8,35 @@ using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.Entity;
 using Fragile.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Fragile
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
+
+        public IConfiguration Configuration { get; private set; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFramework()
+            /*services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ApplicationContext>(options =>
                     options.UseSqlServer("Server=tcp:fragile.database.windows.net,1433;Database=fragiledb;User ID=fragile@fragile;Password=Drew1022807!;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+                    */
+
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("config.json")
+                //All environment variables in the process's context flow in as configuration values.
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+
+            services.AddEntityFramework().AddSqlServer().AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+
             services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
             app.UseIISPlatformHandler();
@@ -40,7 +52,6 @@ namespace Fragile
             app.UseStatusCodePages();
         }
 
-        // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }
