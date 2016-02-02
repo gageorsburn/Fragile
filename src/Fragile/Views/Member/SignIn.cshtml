@@ -1,0 +1,13 @@
+﻿@model SignInModel
+
+<form asp-action="SignIn">
+    Email: @Html.ValidationMessageFor(m => m.Email)
+    <br />
+    <input asp-for="Email" type="text" />
+    <br />
+    Password: @Html.ValidationMessageFor(m => m.Password)
+    <br />
+    <input asp-for="Password" type="text" />
+    <br />
+    <button type="submit">Submit</button>
+</form>

@@ -13,7 +13,7 @@ namespace Fragile.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return View("", null);
         }
     }
 }

@@ -1,1 +1,7 @@
-﻿@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
+﻿@using Fragile.Models
+@using Fragile.ViewModels
+@using Fragile.Services
+
+@inject AuthenticationService Authentication
+
+@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"

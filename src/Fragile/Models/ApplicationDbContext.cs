@@ -8,8 +8,6 @@ using Microsoft.Data.Entity;
 
 namespace Fragile.Models
 {
-    //public class ApplicationUser : IdentityUser { }
-
     public class ApplicationDbContext: DbContext
     {
         public ApplicationDbContext() : base()
@@ -22,5 +20,6 @@ namespace Fragile.Models
         public DbSet<Contact> Contact { get; set; }
         public DbSet<CompanyEvent> CompanyEvent { get; set; }
         public DbSet<TeamMember> TeamMember { get; set; }
+        public DbSet<Member> Member { get; set; }
     }
 }

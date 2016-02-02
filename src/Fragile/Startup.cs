@@ -10,6 +10,8 @@ using Microsoft.Data.Entity;
 using Fragile.Models;
 using Microsoft.Extensions.Configuration;
 
+using Fragile.Services;
+
 namespace Fragile
 {
     public class Startup
@@ -19,12 +21,6 @@ namespace Fragile
 
         public void ConfigureServices(IServiceCollection services)
         {
-            /*services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<ApplicationContext>(options =>
-                    options.UseSqlServer("Server=tcp:fragile.database.windows.net,1433;Database=fragiledb;User ID=fragile@fragile;Password=Drew1022807!;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
-                    */
-
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("config.json")
                 //All environment variables in the process's context flow in as configuration values.
@@ -34,22 +30,23 @@ namespace Fragile
 
             services.AddEntityFramework().AddSqlServer().AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
+            services.AddScoped<AuthenticationService>();
+
             services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseDeveloperExceptionPage();
             app.UseIISPlatformHandler();
             app.UseStaticFiles();
+            app.UseStatusCodePages();
 
             app.UseMvc(mvc => mvc.MapRoute(
                 name: "default",
                 template: "{controller}/{action}/{id?}",
                 defaults: new { controller="Services", action="Index", }
                 ));
-
-            app.UseDeveloperExceptionPage();
-            app.UseStatusCodePages();
         }
 
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);

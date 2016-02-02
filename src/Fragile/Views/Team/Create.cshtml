@@ -1,0 +1,23 @@
+﻿@model TeamMember
+<section id="team" class="bg-light-gray">
+    <div class="container">
+        <div class="col-lg-12 text-center">
+            <form asp-action="Create">
+                Name:<br />
+                <input type="text" asp-for="Name" /><br />
+                Role:<br />
+                <input type="text" asp-for="Role" /><br />
+                Profile Image:<br />
+                <input type="text" asp-for="ProfileImageUrl" /><br />
+                Twitter:<br />
+                <input type="text" asp-for="TwitterUrl" /><br />
+                Facebook:<br />
+                <input type="text" asp-for="FacebookUrl" /><br />
+                LinkedIn:<br />
+                <input type="text" asp-for="LinkedinUrl" /><br />
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</section>
