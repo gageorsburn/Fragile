@@ -6,6 +6,8 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Data.Entity;
+using Fragile.Models;
 
 namespace Fragile
 {
@@ -15,6 +17,10 @@ namespace Fragile
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFramework()
+                .AddSqlServer()
+                .AddDbContext<ApplicationContext>(options =>
+                    options.UseSqlServer("Server=tcp:fragile.database.windows.net,1433;Database=fragiledb;User ID=fragile@fragile;Password=Drew1022807!;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddMvc();
         }
 
