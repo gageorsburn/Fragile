@@ -30,7 +30,6 @@ namespace Fragile.Controllers
             Authentication = authenticationService;
         }
 
-        // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
@@ -47,18 +46,25 @@ namespace Fragile.Controllers
         {
             if (ModelState.IsValid)
             {
-                var member = DbContext.Member.Where(m => m.Email == signInModel.Email).FirstOrDefault();
+                var member = DbContext.TeamMember.Where(m => m.Email == signInModel.Email).FirstOrDefault();
 
                 if (member != null)
                 {
-                    if (member.PasswordHash.CompareTo(signInModel.Password))
+                    if (member.PasswordHash != null)
                     {
-                        Authentication.AuthorizedMember = member;
-                        return Redirect("/");
+                        if (member.PasswordHash.CompareTo(signInModel.Password))
+                        {
+                            Authentication.AuthorizedMember = member;
+                            return Redirect("/");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Password", "Invalid password.");
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError("Password", "Invalid password.");
+                        return RedirectToAction("ChangePassword", new { Email = signInModel.Email });
                     }
                 }
                 else
@@ -74,7 +80,29 @@ namespace Fragile.Controllers
         {
             Authentication.AuthorizedMember = null;
 
-            return View();
+            return RedirectToAction("SignIn");
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword(string Email)
+        {
+            return View(new SignInModel { Email = Email });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(SignInModel signInModel)
+        {
+            var member = DbContext.TeamMember.Where(m => m.Email == signInModel.Email).FirstOrDefault();
+
+            if(member.PasswordHash == null || Authentication.AuthorizedMember?.Email == member.Email)
+            {
+                member.PasswordHash = PasswordHashModel.Generate(signInModel.Password);
+
+                DbContext.TeamMember.Update(member);
+                await DbContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("SignIn");
         }
 
         public IActionResult HashPassword(string Password)

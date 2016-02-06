@@ -21,7 +21,7 @@ namespace Fragile.Controllers
         {
             this.dbContext = dbContext;
         }
-        // GET: /<controller>/
+
         public IActionResult Index()
         {
             return View(dbContext.TeamMember);
@@ -41,7 +41,7 @@ namespace Fragile.Controllers
             dbContext.TeamMember.Add(teamMember);
             await dbContext.SaveChangesAsync();
 
-            return View(teamMember);
+            return RedirectToAction("Index");
         }
 
         [Route("Team/Update/{Name}")]
@@ -63,20 +63,28 @@ namespace Fragile.Controllers
             updateTeamMember.ProfileImageUrl = teamMember.ProfileImageUrl;
             updateTeamMember.FacebookUrl = teamMember.FacebookUrl;
             updateTeamMember.TwitterUrl = teamMember.TwitterUrl;
-            updateTeamMember.LinkedinUrl = updateTeamMember.LinkedinUrl;
+            updateTeamMember.LinkedinUrl = teamMember.LinkedinUrl;
+            updateTeamMember.Email = teamMember.Email;
 
             dbContext.TeamMember.Update(updateTeamMember);
 
             await dbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
-            //return View(teamMember);
         }
 
+        [Route("Team/Delete/{Name}")]
+        [HttpGet]
         [RequireAuthentication]
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(string Name)
         {
-            return View();
+            TeamMember deleteTeamMember = dbContext.TeamMember.Where(m => m.Name == Name).FirstOrDefault();
+
+            dbContext.TeamMember.Remove(deleteTeamMember);
+
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }

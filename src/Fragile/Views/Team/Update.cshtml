@@ -1,17 +1,63 @@
 ﻿@model TeamMember
-<form asp-action="Update" asp-route-Name="@Model.Name">
-    Name:<br />
-    <input type="text" asp-for="Name" /><br />
-    Role:<br />
-    <input type="text" asp-for="Role" /><br />
-    Profile Image:<br />
-    <input type="text" asp-for="ProfileImageUrl" /><br />
-    Twitter:<br />
-    <input type="text" asp-for="TwitterUrl" /><br />
-    Facebook:<br />
-    <input type="text" asp-for="FacebookUrl" /><br />
-    LinkedIn:<br />
-    <input type="text" asp-for="LinkedinUrl" /><br />
 
-    <input type="submit" value="Submit">
-</form>
+<section id="team" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Update" asp-route-Name="@Model.Name">
+
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input class="form-control" type="text" asp-for="Name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input class="form-control" type="text" asp-for="Email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Role:</label>
+                        <input class="form-control" type="text" asp-for="Role" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Profile Image Url:</label>
+                        <div class="row">
+                            <img id="ProfileImagePreview" src="@Model.ProfileImageUrl" />
+                         </div>
+                        <input class="form-control" type="text" asp-for="ProfileImageUrl" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Twitter Url:</label>
+                        <input class="form-control" type="text" asp-for="TwitterUrl" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Facebook Url:</label>
+                        <input class="form-control" type="text" asp-for="FacebookUrl" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>LinkedIn Url:</label>
+                        <input class="form-control" type="text" asp-for="LinkedinUrl" />
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-lg-6 text-left">
+                            <div id="success"></div>
+                            <a id="btnDelete" asp-action="Delete" asp-route-Name="@Model.Name" class="btn btn-xl">Delete</a>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <div id="success"></div>
+                            <input type="submit" value="Submit" class="btn btn-xl" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

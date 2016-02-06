@@ -23,9 +23,9 @@ namespace Fragile.Services
             get;
         }
 
-        private Member authorizedMember;
+        private TeamMember authorizedMember;
 
-        public Member AuthorizedMember
+        public TeamMember AuthorizedMember
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Fragile.Services
 
                 if(SessionKey != null)
                 {
-                    authorizedMember = DbContext.Member.Where(s => s.SessionKey == SessionKey).FirstOrDefault();
+                    authorizedMember = DbContext.TeamMember.Where(s => s.SessionKey == SessionKey).FirstOrDefault();
                 }
 
                 return authorizedMember;
@@ -50,7 +50,7 @@ namespace Fragile.Services
 
                     HttpContext.Response.Cookies.Append("Session", SessionKey);
                     value.SessionKey = SessionKey;
-                    DbContext.Member.Update(value);
+                    DbContext.TeamMember.Update(value);
                     DbContext.SaveChanges();
                 }
                 else

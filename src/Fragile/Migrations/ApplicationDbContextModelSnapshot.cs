@@ -16,6 +16,24 @@ namespace Fragile.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Fragile.Models.Blog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AuthorName");
+
+                    b.Property<string>("Body");
+
+                    b.Property<DateTime>("DatePosted");
+
+                    b.Property<DateTime>("PostAfterDate");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+                });
+
             modelBuilder.Entity("Fragile.Models.CompanyEvent", b =>
                 {
                     b.Property<int>("Id")
@@ -44,20 +62,6 @@ namespace Fragile.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("PhoneNumber");
-
-                    b.HasKey("Id");
-                });
-
-            modelBuilder.Entity("Fragile.Models.Member", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("PasswordHashData");
-
-                    b.Property<string>("SessionKey");
 
                     b.HasKey("Id");
                 });
@@ -102,13 +106,19 @@ namespace Fragile.Migrations
                 {
                     b.Property<string>("Name");
 
+                    b.Property<string>("Email");
+
                     b.Property<string>("FacebookUrl");
 
                     b.Property<string>("LinkedinUrl");
 
+                    b.Property<string>("PasswordHashData");
+
                     b.Property<string>("ProfileImageUrl");
 
                     b.Property<string>("Role");
+
+                    b.Property<string>("SessionKey");
 
                     b.Property<string>("TwitterUrl");
 

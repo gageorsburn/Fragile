@@ -4,9 +4,8 @@
   "dependencies": {
     "startbootstrap-agency": "1.0.6",
     "bootstrap": "3.3.6",
-    "jquery": "2.2.0"
+    "jquery": "2.2.0",
+    "eonasdan-bootstrap-datetimepicker": "4.17.37"
   },
-  "exportsOverride": {
-
-  }
+  "exportsOverride": {}
 }

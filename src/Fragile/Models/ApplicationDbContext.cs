@@ -20,6 +20,6 @@ namespace Fragile.Models
         public DbSet<Contact> Contact { get; set; }
         public DbSet<CompanyEvent> CompanyEvent { get; set; }
         public DbSet<TeamMember> TeamMember { get; set; }
-        public DbSet<Member> Member { get; set; }
+        public DbSet<Blog> Blog { get; set; }
     }
 }
