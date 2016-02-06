@@ -18,5 +18,11 @@ namespace Fragile.ViewModels
             get;
             set;
         }
+
+        public string ResetPasswordToken
+        {
+            get;
+            set;
+        }
     }
 }

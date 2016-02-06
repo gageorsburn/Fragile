@@ -75,5 +75,12 @@ namespace Fragile.Services
             rng.GetBytes(randomData);
             return Convert.ToBase64String(randomData);
         }
+
+        public static string GetRandomString(this RandomNumberGenerator rng, int length)
+        {
+            var randomData = new byte[length];
+            rng.GetBytes(randomData);
+            return System.Text.Encoding.UTF32.GetString(randomData);
+        }
     }
 }

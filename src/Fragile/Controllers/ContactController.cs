@@ -6,6 +6,7 @@ using Fragile.Attributes;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using Microsoft.AspNet.Http.Features;
 
 namespace Fragile.Controllers
 {
@@ -49,6 +50,7 @@ namespace Fragile.Controllers
             var message = DbContext.Contact.Where(m => m.Id == Id).FirstOrDefault();
 
             message.Read = true;
+            message.IPAddress = HttpContext.Connection.RemoteIpAddress.ToString();
 
             DbContext.Contact.Update(message);
             await DbContext.SaveChangesAsync();

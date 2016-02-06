@@ -19,8 +19,7 @@ namespace Fragile.Models
         public string FacebookUrl { get; set; }
         public string LinkedinUrl { get; set; }
         public string GitHubUrl { get; set; }
-
-        public Guid ResetPasswordToken { get; set; }
+        public string ResetPasswordToken { get; set; }
 
         [NotMapped]
         public PasswordHashModel PasswordHash { get; set; }

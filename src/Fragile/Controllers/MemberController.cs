@@ -47,7 +47,13 @@ namespace Fragile.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ChangePassword", new { Email = signInModel.Email });
+                        //send email
+                        member.ResetPasswordToken = AuthenticationService.Rng.GetRandomString(32);
+
+                        DbContext.TeamMember.Update(member);
+                        DbContext.SaveChanges();
+
+                        return RedirectToAction("SignIn");
                     }
                 }
                 else
@@ -65,11 +71,12 @@ namespace Fragile.Controllers
 
             return RedirectToAction("SignIn");
         }
-
+        
         [HttpGet]
-        public IActionResult ChangePassword(string Email)
+        //[Route("Member/ChangePassword/{Email}/{ResetPasswordToken}")]
+        public IActionResult ChangePassword(string Email, string ResetPasswordToken)
         {
-            return View(new SignInModel { Email = Email });
+            return View(new SignInModel { Email = Email, ResetPasswordToken = ResetPasswordToken });
         }
 
         [HttpPost]

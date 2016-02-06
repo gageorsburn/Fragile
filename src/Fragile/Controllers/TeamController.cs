@@ -31,6 +31,8 @@ namespace Fragile.Controllers
         [RequireAuthentication]
         public async Task<IActionResult> Create(TeamMember teamMember)
         {
+            teamMember.ResetPasswordToken = AuthenticationService.Rng.GetRandomString(32);
+
             DbContext.TeamMember.Add(teamMember);
             await DbContext.SaveChangesAsync();
 

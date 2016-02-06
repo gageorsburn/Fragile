@@ -16,20 +16,20 @@ namespace Fragile.Controllers
 
         public IActionResult Index()
         {
-            return View(DbContext.Blog.Where(article => article.PostDate < DateTime.Now));
+            return View(DbContext.Blog.Where(article => article.PostDate.CompareTo(DateTime.Now) < 0));
         }
 
         [Route("/Blog/Author/{Author}")]
         public IActionResult By(string Author)
         {
             return View("Index", 
-                DbContext.Blog.Where(article => article.AuthorName == Author && article.PostDate < DateTime.Now));
+                DbContext.Blog.Where(article => article.AuthorName == Author && article.PostDate.CompareTo(DateTime.Now) < 0));
         }
 
         [Route("/Blog/Article/{Title}")]
         public IActionResult Article(string Title)
         {
-            var post = DbContext.Blog.Where(article => article.Title == Title).FirstOrDefault();
+            var post = DbContext.Blog.Where(article => article.Title == Title && article.PostDate.CompareTo(DateTime.Now) < 0).FirstOrDefault();
 
             if (post == null)
                 return HttpNotFound();
