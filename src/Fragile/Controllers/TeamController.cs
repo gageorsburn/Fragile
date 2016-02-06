@@ -6,25 +6,18 @@ using Microsoft.AspNet.Mvc;
 
 using Fragile.Attributes;
 using Fragile.Models;
+using Fragile.Services;
 
 namespace Fragile.Controllers
 {
-    //[Route("Team")]
-    public class TeamController : Controller
+    public class TeamController : BasicController
     {
-        public ApplicationDbContext dbContext
-        {
-            get;
-        }
-
-        public TeamController(ApplicationDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+        public TeamController(ApplicationDbContext dbContext, AuthenticationService authenticationService) : 
+            base(dbContext, authenticationService) { }
 
         public IActionResult Index()
         {
-            return View(dbContext.TeamMember);
+            return View(DbContext.TeamMember);
         }
         
         [HttpGet]
@@ -38,8 +31,8 @@ namespace Fragile.Controllers
         [RequireAuthentication]
         public async Task<IActionResult> Create(TeamMember teamMember)
         {
-            dbContext.TeamMember.Add(teamMember);
-            await dbContext.SaveChangesAsync();
+            DbContext.TeamMember.Add(teamMember);
+            await DbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -49,7 +42,7 @@ namespace Fragile.Controllers
         [RequireAuthentication]
         public IActionResult Update(string Name)
         {
-            return View(dbContext.TeamMember.Where(m => m.Name == Name).FirstOrDefault());
+            return View(DbContext.TeamMember.Where(m => m.Name == Name).FirstOrDefault());
         }
 
         [Route("Team/Update/{Name}")]
@@ -57,18 +50,19 @@ namespace Fragile.Controllers
         [RequireAuthentication]
         public async Task<IActionResult> Update(string Name, TeamMember teamMember)
         {
-            TeamMember updateTeamMember = dbContext.TeamMember.Where(m => m.Name == Name).FirstOrDefault();
+            TeamMember updateTeamMember = DbContext.TeamMember.Where(m => m.Name == Name).FirstOrDefault();
 
+            updateTeamMember.Email = teamMember.Email;
             updateTeamMember.Role = teamMember.Role;
             updateTeamMember.ProfileImageUrl = teamMember.ProfileImageUrl;
             updateTeamMember.FacebookUrl = teamMember.FacebookUrl;
             updateTeamMember.TwitterUrl = teamMember.TwitterUrl;
             updateTeamMember.LinkedinUrl = teamMember.LinkedinUrl;
-            updateTeamMember.Email = teamMember.Email;
+            updateTeamMember.GitHubUrl = teamMember.GitHubUrl;
 
-            dbContext.TeamMember.Update(updateTeamMember);
+            DbContext.TeamMember.Update(updateTeamMember);
 
-            await dbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -78,11 +72,11 @@ namespace Fragile.Controllers
         [RequireAuthentication]
         public async Task<IActionResult> Delete(string Name)
         {
-            TeamMember deleteTeamMember = dbContext.TeamMember.Where(m => m.Name == Name).FirstOrDefault();
+            TeamMember deleteTeamMember = DbContext.TeamMember.Where(m => m.Name == Name).FirstOrDefault();
 
-            dbContext.TeamMember.Remove(deleteTeamMember);
+            DbContext.TeamMember.Remove(deleteTeamMember);
 
-            await dbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }

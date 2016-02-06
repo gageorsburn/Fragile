@@ -5,7 +5,7 @@
 $('#btnDelete').on("click", function (event) {
     event.preventDefault();
 
-    if (confirm("Do you want to proceed with deleting this team member?")) { window.location = $(this).prop('href'); }
+    if (confirm("Do you want to proceed with deleting this?")) { window.location = $(this).prop('href'); }
 });
 
 $('#PostAfterDatePicker').datetimepicker();

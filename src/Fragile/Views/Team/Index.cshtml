@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-sm-12 text-center">
                 <h2 class="section-heading">Our Amazing Team</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                <h3 class="section-subheading text-muted">Sometimes dysfunctional teams can create functional things.</h3>
                 @if (Authentication.AuthorizedMember != null)
                 {
                     <h3 class="section-subheading"><a asp-action="Create">Create Team Member</a></h3>
@@ -37,6 +37,9 @@
                         <li>
                             <a href="@teamMember.LinkedinUrl"><i class="fa fa-linkedin"></i></a>
                         </li>
+                        <li>
+                            <a href="@teamMember.GitHubUrl"><i class="fa fa-github"></i></a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -44,7 +47,7 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 text-center">
-                <p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+                <p class="large text-muted">Every product we create is the result of our great team work!</p>
             </div>
         </div>
     </div>

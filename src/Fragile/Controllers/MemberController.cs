@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 
@@ -8,27 +6,12 @@ using Fragile.Models;
 using Fragile.Services;
 using Fragile.ViewModels;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Fragile.Controllers
 {
-    public class MemberController : Controller
+    public class MemberController : BasicController
     {
-        public ApplicationDbContext DbContext
-        {
-            get;
-        }
-
-        public AuthenticationService Authentication
-        {
-            get;
-        }
-
-        public MemberController(ApplicationDbContext dbContext, AuthenticationService authenticationService)
-        {
-            DbContext = dbContext;
-            Authentication = authenticationService;
-        }
+        public MemberController(ApplicationDbContext dbContext, AuthenticationService authenticationService) : 
+            base(dbContext, authenticationService) { }
 
         public IActionResult Index()
         {
@@ -54,7 +37,7 @@ namespace Fragile.Controllers
                     {
                         if (member.PasswordHash.CompareTo(signInModel.Password))
                         {
-                            Authentication.AuthorizedMember = member;
+                            AuthenticationService.AuthorizedMember = member;
                             return Redirect("/");
                         }
                         else
@@ -78,7 +61,7 @@ namespace Fragile.Controllers
 
         public IActionResult SignOut()
         {
-            Authentication.AuthorizedMember = null;
+            AuthenticationService.AuthorizedMember = null;
 
             return RedirectToAction("SignIn");
         }
@@ -94,7 +77,7 @@ namespace Fragile.Controllers
         {
             var member = DbContext.TeamMember.Where(m => m.Email == signInModel.Email).FirstOrDefault();
 
-            if(member.PasswordHash == null || Authentication.AuthorizedMember?.Email == member.Email)
+            if(member.PasswordHash == null || AuthenticationService.AuthorizedMember?.Email == member.Email)
             {
                 member.PasswordHash = PasswordHashModel.Generate(signInModel.Password);
 

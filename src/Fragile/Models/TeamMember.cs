@@ -11,13 +11,16 @@ namespace Fragile.Models
     public class TeamMember
     {
         [Key]
-        public String Name { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
-        public String Role { get; set; }
-        public String ProfileImageUrl { get; set; }
-        public String TwitterUrl { get; set; }
-        public String FacebookUrl { get; set; }
-        public String LinkedinUrl { get; set; }
+        public string Role { get; set; }
+        public string ProfileImageUrl { get; set; }
+        public string TwitterUrl { get; set; }
+        public string FacebookUrl { get; set; }
+        public string LinkedinUrl { get; set; }
+        public string GitHubUrl { get; set; }
+
+        public Guid ResetPasswordToken { get; set; }
 
         [NotMapped]
         public PasswordHashModel PasswordHash { get; set; }

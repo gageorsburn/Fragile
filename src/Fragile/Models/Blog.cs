@@ -15,7 +15,6 @@ namespace Fragile.Models
         public string Body { get; set; }
         public string AuthorName { get; set; }
 
-        public DateTime DatePosted { get; set; }
-        public DateTime PostAfterDate { get; set; }
+        public DateTime PostDate { get; set; }
     }
 }

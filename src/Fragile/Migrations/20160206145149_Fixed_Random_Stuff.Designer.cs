@@ -8,9 +8,10 @@ using Fragile.Models;
 namespace Fragile.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160206145149_Fixed_Random_Stuff")]
+    partial class Fixed_Random_Stuff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -53,8 +54,6 @@ namespace Fragile.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date");
-
                     b.Property<string>("Email");
 
                     b.Property<string>("Message");
@@ -62,8 +61,6 @@ namespace Fragile.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("Read");
 
                     b.HasKey("Id");
                 });

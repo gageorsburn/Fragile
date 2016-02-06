@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using Fragile.Models;
+using Fragile.Services;
 
 namespace Fragile.Controllers
 {
-    public class AboutController : Controller
+    public class AboutController : BasicController
     {
-        // GET: /<controller>/
+        public AboutController(ApplicationDbContext dbContext, AuthenticationService authenticationService) : 
+            base(dbContext, authenticationService) { }
+
         public IActionResult Index()
         {
-            return View("", null);
+            return View();
         }
     }
 }

@@ -1,0 +1,31 @@
+﻿@model IQueryable<Contact>
+
+<section id="viewMessages" class="bg-light-gray">
+    <div class="container">
+        @foreach (Contact contact in Model.OrderByDescending(m => m.Date))
+        {
+                <div class="row">
+                    <p class="col-sm-2 text-left">
+                        <a asp-action="ViewMessages" asp-route-Id="@contact.Id">@contact.Name</a>
+                    </p>
+                    @if (contact.Read)
+                    {
+                        <span class="col-sm-2 text-left">
+                            <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                        </span>
+                    }
+                </div>
+                <div class="row">
+                    <div class="text-muted">
+                        <div class="col-sm-1 text-center">@contact.PhoneNumber</div>
+                        <div class="col-sm-1 text-center">@contact.Email</div>
+                    </div>
+                </div>
+                    <p class="text-center">@contact.Message.Substring(0, contact.Message.Length < 100 ? contact.Message.Length : 100)</p>
+                
+
+                <hr />
+        }
+    </div>
+</section>
