@@ -12,8 +12,8 @@ namespace Fragile.Controllers
 {
     public class ContactController : BasicController
     {
-        public ContactController(ApplicationDbContext dbContext, AuthenticationService authenticationService) : 
-            base(dbContext, authenticationService) { }
+        public ContactController(ApplicationDbContext dbContext, AuthenticationService authenticationService, EmailService emailService) : 
+            base(dbContext, authenticationService, emailService) { }
 
         public IActionResult Index()
         {
@@ -30,9 +30,12 @@ namespace Fragile.Controllers
         public async Task<IActionResult> Create(Contact contact)
         {
             contact.Date = DateTime.Now;
+            contact.IPAddress = HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString();
 
             DbContext.Contact.Add(contact);
             await DbContext.SaveChangesAsync();
+
+            EmailService.SendContactNotification(contact.Email, contact.Message);
 
             return RedirectToAction("Index");
         }
@@ -50,7 +53,6 @@ namespace Fragile.Controllers
             var message = DbContext.Contact.Where(m => m.Id == Id).FirstOrDefault();
 
             message.Read = true;
-            message.IPAddress = HttpContext.Connection.RemoteIpAddress.ToString();
 
             DbContext.Contact.Update(message);
             await DbContext.SaveChangesAsync();

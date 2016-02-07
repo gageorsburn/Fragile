@@ -10,6 +10,7 @@
                 @if (Authentication.AuthorizedMember != null)
                 {
                     <h3 class="section-subheading"><a asp-action="Create">Create Post</a></h3>
+                    <h3 class="section-subheading"><a asp-action="By" asp-route-Author="@Authentication.AuthorizedMember.Name">My Posts</a></h3>
                 }
             </div>
         </div>

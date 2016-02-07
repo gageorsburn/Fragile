@@ -6,16 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Fragile.Models;
+
 namespace Fragile.Services
 {
     public class EmailService
     {
         public SendGrid.Web SendGridClient { get; private set; }
+
         public IUrlHelper Url { get; }
+        public ApplicationDbContext DbContext { get; }
         public HttpContext HttpContext { get; }
 
-        public EmailService(IUrlHelper urlHelper, IHttpContextAccessor contextAccessor, IConfiguration configuration)
+        public EmailService(ApplicationDbContext dbContext, IUrlHelper urlHelper, IHttpContextAccessor contextAccessor, IConfiguration configuration)
         {
+            DbContext = dbContext;
             Url = urlHelper;
             HttpContext = contextAccessor.HttpContext;
             SendGridClient = new SendGrid.Web(new System.Net.NetworkCredential(configuration["Credentials:SendGrid:Id"], configuration["Credentials:SendGrid:Secret"]));
@@ -35,6 +40,23 @@ namespace Fragile.Services
             passwordResetMessage.AddTo(Email);
 
             await SendGridClient.DeliverAsync(passwordResetMessage);
+        }
+
+        public async void SendContactNotification(string Email, string Message)
+        {
+            var notificationMessage = new SendGrid.SendGridMessage
+            {
+                From = new System.Net.Mail.MailAddress("no-reply@fragilesoftware.com", "Fragile Software"),
+                Subject = "Contact Notification from " + Email,
+                Text = Message
+            };
+
+            var emails = DbContext.TeamMember.Select(m => m.Email).ToList();
+
+            foreach (var email in emails)
+                notificationMessage.AddTo(email);
+
+            await SendGridClient.DeliverAsync(notificationMessage);
         }
     }
 }

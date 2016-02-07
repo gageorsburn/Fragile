@@ -23,15 +23,19 @@ namespace Fragile.Controllers
         public IActionResult By(string Author)
         {
             return View("Index", 
+                AuthenticationService.AuthorizedMember?.Name == Author ? DbContext.Blog.Where(article => article.AuthorName == Author):
                 DbContext.Blog.Where(article => article.AuthorName == Author && article.PostDate.CompareTo(DateTime.Now) < 0));
         }
 
         [Route("/Blog/Article/{Title}")]
         public IActionResult Article(string Title)
         {
-            var post = DbContext.Blog.Where(article => article.Title == Title && article.PostDate.CompareTo(DateTime.Now) < 0).FirstOrDefault();
+            var post = DbContext.Blog.Where(article => article.Title == Title).FirstOrDefault();
 
             if (post == null)
+                return HttpNotFound();
+
+            if (post.PostDate.CompareTo(DateTime.Now) > 0 && AuthenticationService.AuthorizedMember?.Name != post.AuthorName)
                 return HttpNotFound();
 
             return View(post);
