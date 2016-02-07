@@ -1,0 +1,38 @@
+﻿@model IQueryable<Blog>
+
+<section id="blog" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h2 class="section-heading">Blog Posts</h2>
+                <h3 class="section-subheading text-muted">Sometimes we write witty and neat articles.</h3>
+
+                @if (Authentication.AuthorizedMember != null)
+                {
+                    <h3 class="section-subheading"><a asp-action="Create">Create Post</a></h3>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                @foreach (var post in Model.OrderByDescending(b => b.PostDate))
+                {
+                    <div class="post-preview">
+                        <a asp-action="Article" asp-route-Title="@post.Title">
+                            <h2 class="post-title">
+                                @post.Title
+                            </h2>
+                        </a>
+                        <h3 class="post-subtitle">
+                            @post.Body.Substring(0, post.Body.Length < 100 ? post.Body.Length : 100)
+                        </h3>
+                        
+                        <p class="post-meta">Posted by <a asp-action="By" asp-route-Author="@post.AuthorName">@post.AuthorName</a> on @post.PostDate</p>
+                    </div>
+                    <hr />
+                }
+            </div>
+        </div>
+    </div>
+</section>
