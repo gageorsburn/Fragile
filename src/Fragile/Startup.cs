@@ -16,7 +16,6 @@ namespace Fragile
 {
     public class Startup
     {
-
         public IConfiguration Configuration { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -30,6 +29,9 @@ namespace Fragile
 
             services.AddEntityFramework().AddSqlServer().AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
+            services.AddSingleton<IConfiguration>(service => { return Configuration; });
+
+            services.AddSingleton<EmailService>();
             services.AddScoped<AuthenticationService>();
 
             services.AddMvc();

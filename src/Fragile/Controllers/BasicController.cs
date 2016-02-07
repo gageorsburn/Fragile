@@ -17,10 +17,24 @@ namespace Fragile.Controllers
             get;
         }
 
-        public BasicController(ApplicationDbContext dbContext, AuthenticationService authenticationService)
+        public EmailService EmailService
+        {
+            get;
+        }
+
+        public BasicController(ApplicationDbContext dbContext,
+            AuthenticationService authenticationService)
         {
             this.DbContext = dbContext;
             this.AuthenticationService = authenticationService;
+        }
+
+        public BasicController(ApplicationDbContext dbContext, 
+            AuthenticationService authenticationService, EmailService emailService)
+        {
+            this.DbContext = dbContext;
+            this.AuthenticationService = authenticationService;
+            this.EmailService = emailService;
         }
     }
 }

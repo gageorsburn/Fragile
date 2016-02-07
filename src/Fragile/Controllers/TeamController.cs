@@ -12,8 +12,8 @@ namespace Fragile.Controllers
 {
     public class TeamController : BasicController
     {
-        public TeamController(ApplicationDbContext dbContext, AuthenticationService authenticationService) : 
-            base(dbContext, authenticationService) { }
+        public TeamController(ApplicationDbContext dbContext, AuthenticationService authenticationService, EmailService emailService) : 
+            base(dbContext, authenticationService, emailService) { }
 
         public IActionResult Index()
         {
@@ -31,7 +31,9 @@ namespace Fragile.Controllers
         [RequireAuthentication]
         public async Task<IActionResult> Create(TeamMember teamMember)
         {
-            teamMember.ResetPasswordToken = AuthenticationService.Rng.GetRandomString(32);
+            teamMember.ResetPasswordToken = AuthenticationService.Rng.GetBase64String(32);
+
+            EmailService.SendResetPasswordToken(teamMember.Email, teamMember.ResetPasswordToken);
 
             DbContext.TeamMember.Add(teamMember);
             await DbContext.SaveChangesAsync();

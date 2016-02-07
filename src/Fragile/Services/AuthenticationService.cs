@@ -80,7 +80,7 @@ namespace Fragile.Services
         {
             var randomData = new byte[length];
             rng.GetBytes(randomData);
-            return System.Text.Encoding.UTF32.GetString(randomData);
+            return System.Text.Encoding.Default.GetString(randomData);
         }
     }
 }

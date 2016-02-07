@@ -6,12 +6,14 @@ using Fragile.Models;
 using Fragile.Services;
 using Fragile.ViewModels;
 
+using SendGrid;
+
 namespace Fragile.Controllers
 {
     public class MemberController : BasicController
     {
-        public MemberController(ApplicationDbContext dbContext, AuthenticationService authenticationService) : 
-            base(dbContext, authenticationService) { }
+        public MemberController(ApplicationDbContext dbContext, AuthenticationService authenticationService, EmailService emailService) : 
+            base(dbContext, authenticationService, emailService) { }
 
         public IActionResult Index()
         {
@@ -47,8 +49,8 @@ namespace Fragile.Controllers
                     }
                     else
                     {
-                        //send email
-                        member.ResetPasswordToken = AuthenticationService.Rng.GetRandomString(32);
+                        member.ResetPasswordToken = AuthenticationService.Rng.GetBase64String(32);
+                        EmailService.SendResetPasswordToken(member.Email, member.ResetPasswordToken);
 
                         DbContext.TeamMember.Update(member);
                         DbContext.SaveChanges();
@@ -73,7 +75,7 @@ namespace Fragile.Controllers
         }
         
         [HttpGet]
-        //[Route("Member/ChangePassword/{Email}/{ResetPasswordToken}")]
+        [Route("/Member/ChangePassword/{Email}/{ResetPasswordToken}")]
         public IActionResult ChangePassword(string Email, string ResetPasswordToken)
         {
             return View(new SignInModel { Email = Email, ResetPasswordToken = ResetPasswordToken });
