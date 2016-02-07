@@ -31,7 +31,7 @@ namespace Fragile.Controllers
         [RequireAuthentication]
         public async Task<IActionResult> Create(TeamMember teamMember)
         {
-            teamMember.ResetPasswordToken = AuthenticationService.Rng.GetBase64String(32);
+            teamMember.ResetPasswordToken = AuthenticationService.Rng.GetHexString(32);
 
             EmailService.SendResetPasswordToken(teamMember.Email, teamMember.ResetPasswordToken);
 

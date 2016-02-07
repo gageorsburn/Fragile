@@ -39,8 +39,8 @@ namespace Fragile
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseDeveloperExceptionPage();
             app.UseIISPlatformHandler();
+            app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseStatusCodePages();
 

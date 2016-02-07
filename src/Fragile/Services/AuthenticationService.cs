@@ -76,11 +76,11 @@ namespace Fragile.Services
             return Convert.ToBase64String(randomData);
         }
 
-        public static string GetRandomString(this RandomNumberGenerator rng, int length)
+        public static string GetHexString(this RandomNumberGenerator rng, int length)
         {
             var randomData = new byte[length];
             rng.GetBytes(randomData);
-            return System.Text.Encoding.Default.GetString(randomData);
+            return BitConverter.ToString(randomData).Replace("-", "");
         }
     }
 }

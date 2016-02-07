@@ -49,7 +49,7 @@ namespace Fragile.Controllers
                     }
                     else
                     {
-                        member.ResetPasswordToken = AuthenticationService.Rng.GetBase64String(32);
+                        member.ResetPasswordToken = AuthenticationService.Rng.GetHexString(32);
                         EmailService.SendResetPasswordToken(member.Email, member.ResetPasswordToken);
 
                         DbContext.TeamMember.Update(member);
@@ -82,13 +82,15 @@ namespace Fragile.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(SignInModel signInModel)
+        [Route("/Member/ChangePassword/{Email}/{ResetPasswordToken}")]
+        public async Task<IActionResult> ChangePassword(SignInModel signInModel, string ResetPasswordToken)
         {
-            var member = DbContext.TeamMember.Where(m => m.Email == signInModel.Email).FirstOrDefault();
+            var member = DbContext.TeamMember.Where(m => m.Email == signInModel.Email && m.ResetPasswordToken == ResetPasswordToken).FirstOrDefault();
 
             if(member.PasswordHash == null || AuthenticationService.AuthorizedMember?.Email == member.Email)
             {
                 member.PasswordHash = PasswordHashModel.Generate(signInModel.Password);
+                member.ResetPasswordToken = null;
 
                 DbContext.TeamMember.Update(member);
                 await DbContext.SaveChangesAsync();
